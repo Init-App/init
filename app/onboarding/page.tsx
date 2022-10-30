@@ -1,5 +1,5 @@
 import { Card } from 'components';
-import { OnBoardingForm } from './form';
+import { OnBoardingForm } from './onboarding-form';
 
 export default function OnBoardingPage() {
   return (

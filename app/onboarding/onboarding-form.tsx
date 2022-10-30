@@ -8,8 +8,8 @@ interface FormData {
   team: string;
 }
 
-const submit: SubmitHandler<FormData> = (data) => {
-  // // TODO: Submit info here...
+const submit: SubmitHandler<FormData> = ({ name, team }) => {
+  // TODO: Submit info here...
 };
 
 export const OnBoardingForm = () => {
