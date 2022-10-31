@@ -2,6 +2,13 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, Form, InputField } from 'components';
+import { nopeResolver } from '@hookform/resolvers/nope';
+import * as Nope from 'nope-validator';
+
+const schema = Nope.object().shape({
+  name: Nope.string().required(),
+  team: Nope.string().required(),
+});
 
 interface FormData {
   name: string;
@@ -17,25 +24,15 @@ export const OnBoardingForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: nopeResolver(schema),
+  });
 
   return (
     <Form onSubmit={handleSubmit(submit)}>
       <h3>Finish Up!</h3>
-      <InputField
-        id="name"
-        label="Full Name"
-        error={errors.name}
-        errorMessage="Full name field is required."
-        {...register('name', { required: true })}
-      />
-      <InputField
-        id="team"
-        label="Team Name"
-        error={errors.team}
-        errorMessage="Team field is required."
-        {...register('team', { required: true })}
-      />
+      <InputField id="name" label="Full Name" error={errors.name} {...register('name')} />
+      <InputField id="team" label="Team Name" error={errors.team} {...register('team')} />
       <div className="form-group">
         <Button type="submit">Submit</Button>
       </div>

@@ -4,4 +4,13 @@
   padding: var(--spacing-6);
   box-shadow: var(--shadow-1);
   border-radius: var(--spacing-1);
+
+  &.signin-signup {
+    height: 442px;
+  }
+
+  &.recover {
+    height: 303px;
+  }
+
 }

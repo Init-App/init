@@ -7,12 +7,11 @@ interface InputFieldProps extends ReturnType<UseFormRegister<Record<string, stri
   label: Path<Record<string, string | number>>;
   id: string;
   error: FieldError | undefined;
-  errorMessage?: string;
   type?: HTMLProps<HTMLInputElement>['type'];
 }
 
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ label, id, error, errorMessage, type = 'text', ...props }, ref) => {
+  ({ label, id, error, type = 'text', ...props }, ref) => {
     return (
       <fieldset className="input-field-fieldset">
         <LabelPrimitive.Root className="input-field-label" htmlFor={id}>
@@ -21,7 +20,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         <input id={id} type={type} {...props} ref={ref} className="input-field-input" />
         {error && (
           <div className="input-field-validation-error">
-            <p className="input-field-validation-error-text">{errorMessage}</p>
+            <p className="input-field-validation-error-text">{error.message}</p>
           </div>
         )}
       </fieldset>

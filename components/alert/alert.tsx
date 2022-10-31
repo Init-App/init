@@ -11,7 +11,7 @@ export const Alert: FC<AlertProps> = ({ children, type, ...props }) => {
       <div className={`alert-icon ${type}`}>
         <i className="fa-solid fa-check" />
       </div>
-      <div className={`alert-icon ${type}`}>{children}</div>
+      <div className={`alert-text ${type}`}>{children}</div>
     </div>
   );
 };

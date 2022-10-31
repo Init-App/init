@@ -7,4 +7,8 @@ if (!(url && key)) {
   throw new Error('Must have Supabase key and url.');
 }
 
-export const supabase = createClient(url, key);
+export const supabase = createClient(url, key, {
+  auth: {
+    autoRefreshToken: true,
+  },
+});
