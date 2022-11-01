@@ -15,6 +15,7 @@
     "@radix-ui/react-label": "^2.0.0",
     "@supabase/supabase-js": "2.0.4",
     "next": "13.0.0",
+    "next-axiom": "^0.15.0",
     "nope-validator": "^1.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -46,5 +47,7 @@
     "trailingComma": "all",
     "singleQuote": true
   },
-  "browserslist": ["defaults and supports es6-module"]
+  "browserslist": [
+    "defaults and supports es6-module"
+  ]
 }
