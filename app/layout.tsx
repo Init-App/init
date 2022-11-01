@@ -2,8 +2,6 @@ import { Inter } from '@next/font/google';
 import 'app/styles/globals.scss';
 import 'app/styles/theme.scss';
 
-const isProd = process.env.NODE_ENV === 'production';
-
 const inter = Inter({
   subsets: ['latin'],
   weight: 'variable',
@@ -25,5 +23,3 @@ export default function RootLayout({ children }: { children: any }) {
     </html>
   );
 }
-
-export { reportWebVitals } from 'next-axiom';
