@@ -25,3 +25,5 @@ export default function RootLayout({ children }: { children: any }) {
     </html>
   );
 }
+
+export { reportWebVitals } from 'next-axiom';
