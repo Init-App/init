@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import 'styles/centered-layout.scss';
+import 'app/styles/centered-layout.scss';
 
 export default function OnBoardingLayout({ children }: PropsWithChildren) {
   return (

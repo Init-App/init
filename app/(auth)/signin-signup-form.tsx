@@ -1,17 +1,15 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { nopeResolver } from '@hookform/resolvers/nope';
 import * as Nope from 'nope-validator';
-
-import { Button, Form, InputField, Alert, Link } from 'components';
-
+import { Button, Form, InputField, Alert, Link } from 'app/components';
 import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
-import { post } from 'utils/request';
+import { post } from 'app/utils/request';
 
 interface FormData {
   email: string;

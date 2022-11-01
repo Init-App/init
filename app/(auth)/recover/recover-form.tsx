@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { nopeResolver } from '@hookform/resolvers/nope/dist/nope';
 import * as Nope from 'nope-validator';
-import { Alert, Button, Form, InputField, Link } from 'components';
-import { post } from 'utils/request';
+import { Alert, Button, Form, InputField, Link } from 'app/components';
+import { post } from 'app/utils/request';
 import type { Dispatch } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 

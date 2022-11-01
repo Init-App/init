@@ -1,4 +1,4 @@
-import { Spinner } from 'components';
+import { Spinner } from 'app/components';
 import './loading.scss';
 
 export default function Loading() {

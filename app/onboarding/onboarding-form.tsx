@@ -1,7 +1,7 @@
 'use client';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button, Form, InputField } from 'components';
+import { Button, Form, InputField } from 'app/components';
 import { nopeResolver } from '@hookform/resolvers/nope';
 import * as Nope from 'nope-validator';
 
