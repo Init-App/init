@@ -1,5 +1,5 @@
 import { supabase } from 'app/supabase';
-import { validate } from 'utils/auth-handler';
+import { validate } from 'app/utils/auth-handler';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Session, User } from '@supabase/gotrue-js';
 

@@ -1,0 +1,130 @@
+:root {
+
+  // Space
+  --space-factor: 3px;
+  --spacing-1: calc(var(--space-factor) * 1);
+  --spacing-2: calc(var(--space-factor) * 2);
+  --spacing-3: calc(var(--space-factor) * 3);
+  --spacing-4: calc(var(--space-factor) * 4);
+  --spacing-5: calc(var(--space-factor) * 5);
+  --spacing-6: calc(var(--space-factor) * 6);
+  --spacing-7: calc(var(--space-factor) * 7);
+  --spacing-8: calc(var(--space-factor) * 8);
+
+  // Brand
+  --color-brand1: hsl(200 7.0% 8.8%);
+  --color-brand2: hsl(198 6.6% 15.8%);
+
+  // Accent
+  --color-accent1: hsl(226, 58.6%, 51.3%);
+  --color-accent2: hsl(226, 55.0%, 45.0%);
+  --color-accent3: hsl(226, 70.0%, 55.5%);
+
+  // Components
+  --color-component1: hsl(209, 13.3%, 95.3%);
+  --color-component2: hsl(209, 12.2%, 93.2%);
+  --color-component3: hsl(208, 11.7%, 91.1%);
+
+  // Main BG
+  --color-bg1: hsl(206, 30.0%, 98.8%);
+  --color-bg2: hsl(206, 30.0%, 98.8%);
+
+  // Text
+  --color-text1: hsl(206, 6.0%, 43.5%);
+  --color-text2: hsl(206, 6.0%, 43.5%);
+
+  // Borders
+  --color-border1: hsl(208, 11.3%, 88.9%);
+  --color-border2: hsl(207, 11.1%, 85.9%);
+  --color-border3: hsl(205, 10.7%, 78.0%);
+
+  // Shadows
+  --color-shadows1: hsla(0, 0%, 0%, 0.478);
+  --color-shadows2: hsla(0, 0%, 0%, 0.565);
+  --color-shadows3: hsla(0, 0%, 0%, 0.439);
+
+  // Success
+  --color-green1: hsl(132, 43.1%, 42.2%);
+  --color-green2: hsl(133, 50.0%, 32.5%);
+
+  // Warning
+  --color-yellow1: hsl(39, 100%, 57.0%);
+  --color-yellow2: hsl(35, 100%, 55.5%);
+
+  // Error
+  --color-red1: hsl(10, 71.5%, 50.0%);
+  --color-red2: hsl(10, 82.0%, 43.5%);
+
+  // Shadows
+  --shadow-1: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.20);
+  --shadow-2: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.20);
+  --shadow-3: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 3px -2px rgba(0, 0, 0, 0.12), 0 1px 8px 0 rgba(0, 0, 0, 0.20);
+  --shadow-4: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.20);
+  --shadow-5: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.20);
+  --shadow-6: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.20);
+  --shadow-7: 0 9px 12px 1px rgba(0, 0, 0, 0.14), 0 3px 16px 2px rgba(0, 0, 0, 0.12), 0 5px 6px -3px rgba(0, 0, 0, 0.20);
+  --shadow-8: 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12), 0 7px 8px -4px rgba(0, 0, 0, 0.20);
+  --shadow-9: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.20);
+  --shadow-10: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.20);
+
+  // Font Weights
+  --font-weight-1: 100;
+  --font-weight-2: 200;
+  --font-weight-3: 300;
+  --font-weight-4: 400;
+  --font-weight-5: 500;
+  --font-weight-6: 600;
+  --font-weight-7: 700;
+  --font-weight-8: 800;
+  --font-weight-9: 900;
+
+  // Font Size
+  --font-size-h1: 75px;
+  --font-size-h2: 50px;
+  --font-size-h3: 42px;
+  --font-size-h4: 30px;
+  --font-size-h5: 24px;
+  --font-size-h6: 20px;
+  --font-size-p: 16px;
+}
+
+body {
+  background-color: var(--color-bg2);
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-2);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-5);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-8);
+  color: var(--color-accent2);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-5);
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  font-weight: var(--font-weight-8);
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  font-weight: var(--font-weight-9);
+}
+
+p {
+  font-size: var(--font-size-p);
+  font-weight: var(--font-weight-3);
+}

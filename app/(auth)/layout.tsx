@@ -1,6 +1,6 @@
-import { Card } from 'components';
-import 'styles/centered-layout.scss';
 import type { PropsWithChildren } from 'react';
+import { Card } from 'app/components';
+import 'app/styles/centered-layout.scss';
 
 export default function AuthLayout({ children }: PropsWithChildren) {
   return (

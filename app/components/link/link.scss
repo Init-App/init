@@ -1,0 +1,12 @@
+.link {
+  color: var(--color-accent2);
+  margin: var(--spacing-2);
+
+  &:hover {
+    color: var(--color-accent1);
+  }
+
+  &:visited {
+    color: var(--color-brand2)
+  }
+}

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Session, User } from '@supabase/gotrue-js';
 import { supabase } from 'app/supabase';
-import { validate } from 'utils/auth-handler';
+import { validate } from 'app/utils/auth-handler';
 
 const isSession = (session: Session | null): session is Session => !!session?.access_token;
 const isUser = (user: User | null): user is User => !!user?.id;
