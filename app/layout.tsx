@@ -1,3 +1,4 @@
+import './tracing';
 import { Inter } from '@next/font/google';
 import 'app/styles/globals.scss';
 import 'app/styles/theme.scss';
