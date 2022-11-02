@@ -1,4 +1,3 @@
-import 'next-logger';
 import tracer from 'dd-trace';
 
 tracer.init({
