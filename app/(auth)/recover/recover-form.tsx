@@ -49,6 +49,7 @@ export const RecoverForm = () => {
         label="Email"
         id="email"
         type="email"
+        autoComplete="email"
         error={errors.email}
         {...register('email')}
       />
