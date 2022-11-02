@@ -1,10 +1,8 @@
-const { withAxiom } = require('next-axiom');
-
 /** @type {import('next').NextConfig} */
-const nextConfig = withAxiom({
+const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: { appDir: true },
-});
+};
 
-module.exports = withAxiom(nextConfig);
+module.exports = nextConfig;

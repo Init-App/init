@@ -17,7 +17,6 @@ export default function RootLayout({ children }: { children: any }) {
           crossOrigin="anonymous"
           async
         ></script>
-        <script async src="/va/script.js"></script>
       </head>
       <body>{children}</body>
     </html>
