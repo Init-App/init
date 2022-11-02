@@ -11,7 +11,12 @@ function setUpDatadogTracing() {
     // Your options here.
     runtimeMetrics: true,
     logInjection: true,
+    profiling: true,
+    env: process.env.VERCEL_ENV,
+    service: 'initist',
+    version: process.env.VERCEL_GIT_COMMIT_SHA,
   });
+  console.debug('Datadog tracing set up');
 }
 
 /**
@@ -22,8 +27,9 @@ function setUpDatadogTracing() {
 function setUpDOMParser() {
   const xmldom = require('xmldom');
   global['DOMParser'] = xmldom.DOMParser;
+  console.debug('DOMParser has been patched');
 }
 
+require('next-logger');
 setUpDatadogTracing();
 setUpDOMParser();
-require('next-logger');
