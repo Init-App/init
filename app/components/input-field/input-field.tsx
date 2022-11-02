@@ -3,7 +3,9 @@ import { FieldError, Path, UseFormRegister } from 'react-hook-form';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import './input-field.scss';
 
-interface InputFieldProps extends ReturnType<UseFormRegister<Record<string, string | number>>> {
+interface InputFieldProps
+  extends ReturnType<UseFormRegister<Record<string, string | number>>>,
+    Omit<HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'onBlur' | 'name'> {
   label: Path<Record<string, string | number>>;
   id: string;
   error: FieldError | undefined;

@@ -88,6 +88,7 @@ export const SigninSignupForm: FC<Props> = ({ type }) => {
         label="Email"
         id="email"
         type="email"
+        autoComplete="email"
         error={errors.email}
         {...register('email')}
       />
@@ -95,6 +96,7 @@ export const SigninSignupForm: FC<Props> = ({ type }) => {
         label="Password"
         id="password"
         type="password"
+        autoComplete={type === 'signin' ? 'current-password' : 'new-password'}
         error={errors.password}
         {...register('password')}
       />
