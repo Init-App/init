@@ -14,18 +14,3 @@ init({
   integrations: [new Integrations.Http({ tracing: true, breadcrumbs: true })],
   debug: true,
 });
-
-const transaction = startTransaction({
-  op: 'test',
-  name: 'My First Test Transaction',
-});
-
-setTimeout(() => {
-  try {
-    console.error('wat');
-  } catch (e) {
-    captureException(e);
-  } finally {
-    transaction.finish();
-  }
-}, 99);
