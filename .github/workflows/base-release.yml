@@ -1,0 +1,31 @@
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+    secrets:
+      SENTRY_AUTH_TOKEN:
+        required: true
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Install
+        run: yarn
+      - name: Build
+        run: yarn build
+      - uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: initist
+          SENTRY_PROJECT: initist
+        with:
+          environment: ${{ inputs.env }}
+          sourcemaps: './.next'
