@@ -1,12 +1,12 @@
-import { supabase } from 'app/supabase';
-import { validate } from 'app/utils/auth-handler';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Session, User } from '@supabase/gotrue-js';
+import { supabase } from 'app/supabase';
+import { validate } from 'app/utils/auth-handler';
 
 const isSession = (session: Session | null): session is Session => !!session?.access_token;
 const isUser = (user: User | null): user is User => !!user?.id;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { isError, body, password, email } = validate(req, res);
 
   if (isError) return res.send(body);
@@ -30,3 +30,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     throw new Error(`Signup error: ${JSON.stringify({ error })}`);
   }
 }
+
+export default handler;

@@ -1,7 +1,7 @@
 import { supabase } from 'app/supabase';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method !== 'POST') {
       return res.status(404).send({ message: 'Not found' });
@@ -19,3 +19,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     throw new Error(`Password recovery failed: ${JSON.stringify({ error })}`);
   }
 }
+
+export default handler;

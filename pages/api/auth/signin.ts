@@ -6,7 +6,7 @@ import { validate } from 'app/utils/auth-handler';
 const isSession = (session: Session | null): session is Session => !!session?.access_token;
 const isUser = (user: User | null): user is User => !!user?.id;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { isError, password, body, email } = validate(req, res);
 
   if (isError) return res.send(body);
@@ -28,3 +28,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.status(400).send({ message: 'Something went terribly wrong. Try again.' });
   throw new Error(`Signin failed: ${JSON.stringify({ data, error })}`);
 }
+
+export default handler;
