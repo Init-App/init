@@ -1,4 +1,5 @@
-const baseUrl = process.env.VERCEL_URL ?? 'http://localhost:3000';
+const baseUrl =
+  process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
 
 type Body = Record<string, string | number | boolean | null | undefined>;
 
