@@ -56,6 +56,7 @@ const action = (
     if (!ok) {
       setError(res.error ? res.message : statusText);
       signinLogger.error(res.error ? res.message : statusText);
+      throw new Error(res.error ? res.message : statusText);
     }
   },
   async signup({ email, password }) {
