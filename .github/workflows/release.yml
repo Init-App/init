@@ -6,45 +6,16 @@ on:
       - development
       - main
 
-env:
-  NEXT_PUBLIC_LOGFLARE_API_KEY: ${{ secrets.NEXT_PUBLIC_LOGFLARE_API_KEY }}
-  NEXT_PUBLIC_LOGFLARE_SOURCE_ID: ${{ secrets.NEXT_PUBLIC_LOGFLARE_SOURCE_ID }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_ORG: initist
-  SENTRY_PROJECT: initist
-
 jobs:
   staging_release:
     if: ${{ github.ref_name == 'development' }}
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn build
-      - uses: getsentry/action-release@v1
-        with:
-          environment: staging
-          sourcemaps: './.next'
+    uses: ./.github/workflows/base-release.yml
+    with:
+      deploy_env: staging
+    secrets: inherit
   production_release:
     if: ${{ github.ref_name == 'main' }}
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: Install
-        run: yarn
-      - name: Build
-        run: yarn build
-      - uses: getsentry/action-release@v1
-        with:
-          environment: production
-          sourcemaps: './.next'
+    uses: ./.github/workflows/base-release.yml
+    with:
+      deploy_env: production
+    secrets: inherit
