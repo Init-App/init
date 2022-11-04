@@ -12,6 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (error) {
       return res.status(400).send({ message: error.message, error });
     } else {
+      throw new Error('WAT!');
       return res.status(200).send({ message: 'A reset link as been sent to your email address.' });
     }
   } catch (error) {
