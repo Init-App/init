@@ -12,8 +12,10 @@ jobs:
     uses: ./.github/workflows/base-release.yml
     with:
       env: staging
+    secrets: inherit
   production_release:
     if: ${{ github.ref_name == 'main' }}
     uses: ./.github/workflows/base-release.yml
     with:
       env: production
+    secrets: inherit
