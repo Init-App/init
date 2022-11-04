@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      env:
+      deploy_env:
         required: true
         type: string
     secrets:
@@ -15,7 +15,7 @@ on:
 jobs:
   create_release:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
+    environment: ${{ inputs.deploy_env }}
     env:
       NEXT_PUBLIC_LOGFLARE_API_KEY: ${{ secrets.NEXT_PUBLIC_LOGFLARE_API_KEY }}
       NEXT_PUBLIC_LOGFLARE_SOURCE_ID: ${{ secrets.NEXT_PUBLIC_LOGFLARE_SOURCE_ID }}
@@ -31,9 +31,9 @@ jobs:
         run: yarn build
       - uses: getsentry/action-release@v1
         env:
-          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: initist
           SENTRY_PROJECT: initist
         with:
-          environment: ${{ inputs.env }}
+          environment: ${{ inputs.deploy_env }}
           sourcemaps: './.next'
