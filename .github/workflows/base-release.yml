@@ -4,14 +4,15 @@ on:
       env:
         required: true
         type: string
-    secrets:
-      SENTRY_AUTH_TOKEN:
-        required: true
 
 jobs:
   create_release:
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    env:
+      NEXT_PUBLIC_LOGFLARE_API_KEY: ${{ secrets.NEXT_PUBLIC_LOGFLARE_API_KEY }}
+      NEXT_PUBLIC_LOGFLARE_SOURCE_ID: ${{ secrets.NEXT_PUBLIC_LOGFLARE_SOURCE_ID }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -23,7 +24,7 @@ jobs:
         run: yarn build
       - uses: getsentry/action-release@v1
         env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: initist
           SENTRY_PROJECT: initist
         with:
