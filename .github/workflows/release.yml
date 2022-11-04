@@ -11,11 +11,11 @@ jobs:
     if: ${{ github.ref_name == 'development' }}
     uses: ./.github/workflows/base-release.yml
     with:
-      env: staging
+      deploy_env: staging
     secrets: inherit
   production_release:
     if: ${{ github.ref_name == 'main' }}
     uses: ./.github/workflows/base-release.yml
     with:
-      env: production
+      deploy_env: production
     secrets: inherit
