@@ -13,6 +13,8 @@ init({
   tracesSampleRate: 1.0,
   environment: process.env.NEXT_PUBLIC_SENTRY_ENV ?? 'development',
   enabled: ['staging', 'production'].includes(process.env.NEXT_PUBLIC_SENTRY_ENV ?? ''),
+  attachStacktrace: true,
+
   integrations: [
     new BrowserTracing({
       tracingOrigins: [/^.*(init|localhost).*$/],
