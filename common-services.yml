@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  app:
+    container_name: initist-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+    env_file:
+      - .env.local
+    restart: always
+    ports:
+      - "80:3000"
+  logging:
+    image: sematext/agent:latest
+    privileged: true
+    depends_on:
+      - app
+    environment:
+      - INFRA_TOKEN=c66e9c70-abb9-4e7b-9a7f-af309f98a002
+      - SERVER_BASE_URL=https://spm-receiver.sematext.com
+      - LOGS_RECEIVER_URL=https://logsene-receiver.sematext.com
+      - EVENT_RECEIVER_URL=https://event-receiver.sematext.com
+      - COMMAND_SERVER_URL=https://command.sematext.com
+    cap_add:
+      - SYS_ADMIN
+    restart: always
+    volumes:
+      - /:/hostfs:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /var/run/:/var/run
+      - /sys/kernel/debug:/sys/kernel/debug
+      - /sys:/host/sys:ro
+      - /dev:/hostfs/dev:ro
+volumes:
+  data:

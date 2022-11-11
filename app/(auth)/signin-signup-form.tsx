@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { nopeResolver } from '@hookform/resolvers/nope';
@@ -10,7 +10,7 @@ import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { post } from 'app/utils/request';
-import { logger } from '../utils/logger';
+import { sentry } from '../utils/sentry.client.config';
 
 interface FormData {
   email: string;
@@ -40,36 +40,34 @@ const schema = Nope.object().shape({
   password: Nope.string().min(6, 'Password must be at 6 characters.').required(),
 });
 
-const signinLogger = logger.child({ page: 'signin' });
-const signupLogger = logger.child({ page: 'signup' });
-
 const action = (
   setError: Dispatch<string | undefined>,
   setMessage: Dispatch<string | undefined>,
   push: AppRouterInstance['push'],
 ): ActionType => ({
   async signin({ email, password }) {
-    signinLogger.info(`Attempting signin of ${email}`);
+    console.info(`Attempting signin of ${email}`);
     setError(undefined);
     const { ok, statusText, res } = await post('/api/auth/signin', { email, password });
 
     if (!ok) {
       setError(res.error ? res.message : statusText);
-      signinLogger.error(res.error ? res.message : statusText);
-      throw new Error(res.error ? res.message : statusText);
+      console.error(res.error ? res.message : statusText);
+      sentry.captureException(res.error ? res.message : statusText);
     }
   },
   async signup({ email, password }) {
-    signupLogger.info(`Attempting signup of ${email}`);
+    console.info(`Attempting signup of ${email}`);
     setError(undefined);
     const { res, ok, statusText } = await post('/api/auth/signup', { email, password });
 
     if (!ok) {
       setError(res.error ? res.message : statusText);
-      signupLogger.error(res.error ? res.message : statusText);
+      console.error(res.error ? res.message : statusText);
+      sentry.captureException(res.error ? res.message : statusText);
     } else {
       setMessage(res.message);
-      signupLogger.info(res.message);
+      console.info(res.message);
     }
   },
 });
@@ -90,6 +88,12 @@ export const SigninSignupForm: FC<Props> = ({ type }) => {
   } = useForm<FormData>({
     resolver: nopeResolver(schema),
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      throw new Error('Something terrible has happened sdfsdfsdfsdfsawe.');
+    }, 3000);
+  }, []);
 
   return (
     <Form onSubmit={handleSubmit(submit[type])}>

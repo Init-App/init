@@ -1,24 +1,27 @@
-import pino from 'pino';
-import { logflarePinoVercel } from 'pino-logflare';
+import morgan from 'morgan';
+import json from 'morgan-json';
 
-const { stream, send } = logflarePinoVercel({
-  apiKey: process.env.NEXT_PUBLIC_LOGFLARE_API_KEY ?? '',
-  sourceToken: process.env.NEXT_PUBLIC_LOGFLARE_SOURCE_ID ?? '',
+const format = json({
+  method: ':method',
+  url: ':url',
+  status: ':status',
+  contentLength: ':res[content-length]',
+  responseTime: ':response-time',
 });
 
-export const logger = pino(
-  {
-    browser: {
-      transmit: {
-        level: 'info',
-        send,
-      },
-      level: 'debug',
-      base: {
-        env: process.env.NEXT_PUBLIC_SENTRY_ENV,
-        version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-      },
+export const httpLogger = morgan(format, {
+  stream: {
+    write: (message) => {
+      const { method, url, status, contentLength, responseTime } = JSON.parse(message);
+
+      console.info('HTTP Access Log', {
+        timestamp: new Date().toString(),
+        method,
+        url,
+        status: Number(status),
+        contentLength,
+        responseTime: Number(responseTime),
+      });
     },
   },
-  stream,
-);
+});
