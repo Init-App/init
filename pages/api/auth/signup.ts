@@ -26,8 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.redirect('/app');
     }
   } catch (error) {
-    res.status(400).send({ message: 'Something terrible happened. Try again.' });
-    throw new Error(`Signup error: ${JSON.stringify({ error })}`);
+    return res.status(400).send({ message: 'Something terrible happened. Try again.' });
   }
 }
 

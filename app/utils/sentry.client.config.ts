@@ -1,10 +1,10 @@
 'use client';
 
-import { init } from '@sentry/browser';
+import * as Sentry from '@sentry/browser';
 import '@sentry/tracing';
 import { BrowserTracing } from '@sentry/tracing';
 
-init({
+Sentry.init({
   debug: true,
   dsn:
     process.env.NEXT_PUBLIC_SENTRY_DSN ||
@@ -12,7 +12,7 @@ init({
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1.0,
   environment: process.env.NEXT_PUBLIC_SENTRY_ENV ?? 'development',
-  enabled: ['staging', 'production'].includes(process.env.NEXT_PUBLIC_SENTRY_ENV ?? ''),
+  // enabled: ['staging', 'production'].includes(process.env.NEXT_PUBLIC_SENTRY_ENV ?? ''),
   attachStacktrace: true,
 
   integrations: [
@@ -22,3 +22,5 @@ init({
   ],
   release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? 'unknown',
 });
+
+export const sentry = Sentry;

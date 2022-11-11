@@ -1,0 +1,28 @@
+build:
+  app:
+    context: .
+    dockerfile: Dockerfile
+    target: builder
+  logger:
+    image: sematext/agent:latest
+    depends_on: app
+    args:
+      - INFRA_TOKEN=c66e9c70-abb9-4e7b-9a7f-af309f98a002
+      - SERVER_BASE_URL=https://spm-receiver.sematext.com
+      - LOGS_RECEIVER_URL=https://logsene-receiver.sematext.com
+      - EVENT_RECEIVER_URL=https://event-receiver.sematext.com
+      - COMMAND_SERVER_URL=https://command.sematext.com
+
+deploy: 
+  compose: docker-compose.dev.yml
+
+dev:
+  app:
+    command: yarn dev
+    forward:
+      - 3000:3000
+    sync:
+      - .:/app
+    envFiles:
+    - .env.local
+
