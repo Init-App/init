@@ -12,9 +12,9 @@ services:
       - .env.local
     restart: always
     ports:
-      - "80:3000"
+      - "3000:3000"
   logging:
-    image: sematext/agent:latest
+    image: sematext/agent:master-arm64
     privileged: true
     depends_on:
       - app
@@ -31,7 +31,6 @@ services:
       - /:/hostfs:ro
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
-      - /var/run/:/var/run
       - /sys/kernel/debug:/sys/kernel/debug
       - /sys:/host/sys:ro
       - /dev:/hostfs/dev:ro
