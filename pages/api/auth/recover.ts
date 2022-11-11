@@ -1,5 +1,4 @@
 import { supabase } from 'app/supabase';
-import { sentry } from 'app/utils/sentry.server.config';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -13,7 +12,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (error) {
       return res.status(400).send({ message: error.message, error });
     } else {
-      sentry.captureException('WAT!!');
       return res.status(200).send({ message: 'A reset link as been sent to your email address.' });
     }
   } catch (error) {
