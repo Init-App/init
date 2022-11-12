@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const validate = (req: NextApiRequest, res: NextApiResponse) => {
   const body = { message: '' };
-  let isError = false;
+  const isError = false;
   if (req.method !== 'POST') {
     res.status(404);
     body.message = 'Not found';

@@ -1,7 +1,6 @@
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { httpLogger } from 'app/utils/logger';
 import { sentry } from 'app/utils/sentry.server.config';
 
 export const middleware = async (req: NextRequest) => {
@@ -12,11 +11,7 @@ export const middleware = async (req: NextRequest) => {
     });
   }
   if (req.nextUrl.pathname.startsWith('/api')) {
-    httpLogger(req, res, (error) => {
-      if (error) {
-        sentry.captureException(error);
-      }
-    });
+    console.info(req, res);
     return res;
   }
 
