@@ -1,6 +1,5 @@
 import { supabase } from '../../app/supabase';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { httpLogger } from 'app/utils/logger';
 
 const didNotCompleteOnboarding = async (userId: string) => {
   const { error } = await supabase
@@ -60,10 +59,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       await didNotCompleteOnboarding(user.id);
       return res.status(400).send({ message: relationError.message, relationError });
     }
-
-    httpLogger(req, res, error => {
-      
-    })
 
     res.redirect('/app');
   } catch (e) {
