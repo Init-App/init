@@ -1,3 +1,5 @@
+import { traceId } from './trace-id';
+
 type Body = Record<string, string | number | boolean | null | undefined>;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -9,6 +11,7 @@ const baseRequest =
       method,
       headers: new Headers({
         'Content-Type': 'application/json',
+        'X-Trace-ID': traceId,
         ...headers,
       }),
       body: JSON.stringify(body),

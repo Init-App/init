@@ -1,5 +1,6 @@
 import morgan from 'morgan';
 import json from 'morgan-json';
+import type { NextRequest, NextResponse } from 'next/server';
 
 const format = json({
   method: ':method',
@@ -9,7 +10,7 @@ const format = json({
   responseTime: ':response-time',
 });
 
-export const httpLogger = morgan(format, {
+export const httpLogger = morgan<any, any>(format, {
   stream: {
     write: (message) => {
       const { method, url, status, contentLength, responseTime } = JSON.parse(message);
