@@ -1,28 +1,26 @@
-import morgan from 'morgan';
-import json from 'morgan-json';
-import type { NextRequest, NextResponse } from 'next/server';
+import pino from 'pino';
+import { logflarePinoVercel } from 'pino-logflare';
 
-const format = json({
-  method: ':method',
-  url: ':url',
-  status: ':status',
-  contentLength: ':res[content-length]',
-  responseTime: ':response-time',
+// create pino-logflare console stream for serverless functions and send function for browser logs
+const { stream, send } = logflarePinoVercel({
+  apiKey: process.env.NEXT_PUBLIC_LOGFLARE_API_KEY ?? '',
+  sourceToken: process.env.NEXT_PUBLIC_LOGFLARE_SOURCE_ID ?? '',
 });
 
-export const httpLogger = morgan<any, any>(format, {
-  stream: {
-    write: (message) => {
-      const { method, url, status, contentLength, responseTime } = JSON.parse(message);
-
-      console.info('HTTP Access Log', {
-        timestamp: new Date().toString(),
-        method,
-        url,
-        status: Number(status),
-        contentLength,
-        responseTime: Number(responseTime),
-      });
+// create pino logger
+export const logger = pino(
+  {
+    browser: {
+      transmit: {
+        level: 'info',
+        send: send,
+      },
+    },
+    level: 'debug',
+    base: {
+      env: process.env.VERCEL_ENV,
+      revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
     },
   },
-});
+  stream,
+);
