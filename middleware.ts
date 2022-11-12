@@ -1,9 +1,25 @@
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { httpLogger } from 'app/utils/logger';
+import { sentry } from 'app/utils/sentry.server.config';
 
 export const middleware = async (req: NextRequest) => {
   const res = NextResponse.next();
+  if (req.headers.has('X-Trace-ID')) {
+    sentry.configureScope((scope) => {
+      scope.setTag('trace_id', req.headers.get('X-Trace-ID'));
+    });
+  }
+  if (req.nextUrl.pathname.startsWith('/api')) {
+    httpLogger(req, res, (error) => {
+      if (error) {
+        sentry.captureException(error);
+      }
+    });
+    return res;
+  }
+
   const supabase = createMiddlewareSupabaseClient({ req, res });
   const {
     data: { session },
@@ -20,5 +36,5 @@ export const middleware = async (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: '/app/:path*',
+  matcher: ['/app/:path*', '/api/:path*'],
 };

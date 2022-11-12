@@ -11,7 +11,10 @@ Sentry.init({
   tracesSampleRate: 1.0,
   environment: process.env.NEXT_PUBLIC_SENTRY_ENV ?? 'development',
   // enabled: ['staging', 'production'].includes(process.env.NEXT_PUBLIC_SENTRY_ENV ?? ''),
-  integrations: [new Sentry.Integrations.Http({ tracing: true, breadcrumbs: true })],
+  integrations: [
+    new Sentry.Integrations.Http({ tracing: true, breadcrumbs: true }),
+    new Sentry.Integrations.RequestData(),
+  ],
   debug: true,
   release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? 'unknown',
 });
