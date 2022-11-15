@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { sentry } from './utils/sentry.client.config';
+import * as Sentry from '@sentry/browser';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 interface Props {
   error: Error;
@@ -11,7 +11,7 @@ interface Props {
 
 const ErrorCatcher: FC<Props> = ({ error, reset }) => {
   useEffect(() => {
-    sentry.captureException(error);
+    Sentry.captureException(error);
   }, [error]);
   return (
     <div>

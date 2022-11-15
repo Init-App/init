@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * This is a Playwright script Checkly generated for you based on your Vercel project.
  * To learn more about Browser checks and Playwright visit: https://www.checklyhq.com/docs/browser-checks

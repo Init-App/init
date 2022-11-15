@@ -1,12 +1,15 @@
-import { sentry } from 'app/utils/sentry.client.config';
-import { traceId } from './utils/trace-id';
-sentry.configureScope((scope) => {
-  scope.setTag('trace_id', traceId);
-});
+'use client';
+
+import { useEffect } from 'react';
+import { createSentry } from './utils/sentry.client.config';
+
 export default function Head() {
+  useEffect(() => {
+    createSentry();
+  });
   return (
     <>
-      <title>Initist</title>
+      <title>Iniitist</title>
     </>
   );
 }
