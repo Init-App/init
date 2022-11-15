@@ -6,7 +6,7 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   experimental: {
     appDir: true,
-    runtime: 'node.js',
+    runtime: 'nodejs',
   },
 };
 

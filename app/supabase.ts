@@ -16,5 +16,8 @@ export const supabase = createClient<definitions>(
     auth: {
       persistSession: false,
     },
+    global: {
+      fetch: (...args) => fetch(...args),
+    },
   },
 );
