@@ -427,6 +427,8 @@ export interface paths {
           full_name?: parameters["rowFilter.profiles.full_name"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           website?: parameters["rowFilter.profiles.website"];
+          /** Has the user completed the onboarding process */
+          has_completed_onboarding?: parameters["rowFilter.profiles.has_completed_onboarding"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -483,6 +485,8 @@ export interface paths {
           full_name?: parameters["rowFilter.profiles.full_name"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           website?: parameters["rowFilter.profiles.website"];
+          /** Has the user completed the onboarding process */
+          has_completed_onboarding?: parameters["rowFilter.profiles.has_completed_onboarding"];
         };
         header: {
           /** Preference */
@@ -503,6 +507,8 @@ export interface paths {
           full_name?: parameters["rowFilter.profiles.full_name"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           website?: parameters["rowFilter.profiles.website"];
+          /** Has the user completed the onboarding process */
+          has_completed_onboarding?: parameters["rowFilter.profiles.has_completed_onboarding"];
         };
         body: {
           /** profiles */
@@ -586,7 +592,11 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /** Format: uuid */
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
     user_id: string;
     /**
      * Format: uuid
@@ -644,6 +654,12 @@ export interface definitions {
     avatar_url?: string;
     /** Format: text */
     website?: string;
+    /**
+     * Format: boolean
+     * @description Has the user completed the onboarding process
+     * @default false
+     */
+    has_completed_onboarding: boolean;
   };
 }
 
@@ -748,6 +764,11 @@ export interface parameters {
   "rowFilter.profiles.avatar_url": string;
   /** Format: text */
   "rowFilter.profiles.website": string;
+  /**
+   * Format: boolean
+   * @description Has the user completed the onboarding process
+   */
+  "rowFilter.profiles.has_completed_onboarding": string;
 }
 
 export interface operations {}
