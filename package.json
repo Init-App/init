@@ -80,7 +80,8 @@
       "node_modules",
       "build",
       "dist",
-      "public"
+      "public",
+      "__checks__"
     ]
   },
   "prettier": {
