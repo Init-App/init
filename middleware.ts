@@ -1,6 +1,6 @@
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export const middleware = async (req: NextRequest) => {
   const res = NextResponse.next();
@@ -23,6 +23,8 @@ export const middleware = async (req: NextRequest) => {
   redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
   return NextResponse.redirect(redirectUrl);
 };
+
+export default middleware;
 
 export const config = {
   matcher: ['/app/:path*', '/api/:path*'],

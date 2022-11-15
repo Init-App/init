@@ -38,6 +38,18 @@
   dependencies:
     regenerator-runtime "^0.13.10"
 
+"@edge-runtime/primitives@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/primitives/-/primitives-2.0.2.tgz#55225bb123a272fc9cb2d311155118a9a52dcaa6"
+  integrity sha512-pE/VlEMzF2+WOdQUR8vgecd0b5kY4/d2Z5rA8tdq2uANQvqallJQ6tJvLmWxResq75kMFln4NDXrtzNBw3mgXA==
+
+"@edge-runtime/types@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/types/-/types-2.0.2.tgz#aaee76f37498df31c342bf45921b8de54f4a1f48"
+  integrity sha512-dy1Rs+d9K6pqAt/BBM2jKb4FzCXfxvQ/7hDyvEQHgzE1GyOsVB6Lm0Da0a9LTx902oSSwOcqMrErd1QnDQoWGQ==
+  dependencies:
+    "@edge-runtime/primitives" "2.0.2"
+
 "@eslint/eslintrc@^1.3.3":
   version "1.3.3"
   resolved "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-1.3.3.tgz"
