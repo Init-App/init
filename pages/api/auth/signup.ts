@@ -1,12 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import 'server-only';
 import { Session, User } from '@supabase/gotrue-js';
-import { supabase } from 'app/supabase';
+import { supabaseServer } from 'app/utils/supabase-server';
 import { validate } from 'app/utils/auth-handler';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const isSession = (session: Session | null): session is Session => !!session?.access_token;
 const isUser = (user: User | null): user is User => !!user?.id;
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const supabase = supabaseServer(req, res);
   const { isError, body, password, email } = validate(req, res);
 
   if (isError) return res.send(body);
@@ -26,7 +28,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.redirect('/app');
     }
   } catch (error) {
-    return res.status(400).send({ message: 'Something terrible happened. Try again.' });
+    res.status(400).send({ message: 'Something terrible happened. Try again.' });
+    throw error;
   }
 }
 
