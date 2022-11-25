@@ -8,6 +8,7 @@ import { Button, Form, InputField, Alert, Link } from 'app/components';
 import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { post } from 'app/utils/request';
+import { supabaseBrowser } from 'app/utils/supabase-browser';
 
 interface FormData {
   email: string;
@@ -42,21 +43,31 @@ const action = (
   setMessage: Dispatch<string | undefined>,
 ): ActionType => ({
   async signin({ email, password }) {
-    setError(undefined);
-    const { ok, statusText, res } = await post('/api/auth/signin', { email, password });
-
-    if (!ok) {
-      setError(res.error ? res.message : statusText);
+    try {
+      setError(undefined);
+      const { ok, statusText, res } = await post('/api/auth/signin', { email, password });
+      if (!ok) {
+        setError(res.error ? res.message : statusText);
+      }
+    } catch (e) {
+      setError(e.message ?? 'Something went wrong and it has been reported. Try again.');
+      throw new Error(e);
     }
   },
   async signup({ email, password }) {
-    setError(undefined);
-    const { res, ok, statusText } = await post('/api/auth/signup', { email, password });
+    try {
 
-    if (!ok) {
-      setError(res.error ? res.message : statusText);
-    } else {
-      setMessage(res.message);
+      setError(undefined);
+      const { res, ok, statusText } = await post('/api/auth/signup', { email, password });
+
+      if (!ok) {
+        setError(res.error ? res.message : statusText);
+      } else {
+        setMessage(res.message);
+      }
+    } catch (e) {
+      setError(e.message ?? 'Something went wrong and it has been reported. Try again.');
+      throw new Error(e);
     }
   },
 });

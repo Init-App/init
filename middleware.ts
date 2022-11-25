@@ -2,29 +2,16 @@ import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export const middleware = async (req: NextRequest) => {
+export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  if (req.nextUrl.pathname.startsWith('/api')) {
-    return res;
-  }
 
   const supabase = createMiddlewareSupabaseClient({ req, res });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
 
-  if (session) {
-    return res;
-  }
+  await supabase.auth.getSession();
 
-  const redirectUrl = req.nextUrl.clone();
-  redirectUrl.pathname = '/signin';
-  redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
-  return NextResponse.redirect(redirectUrl);
-};
-
-export default middleware;
+  return res;
+}
 
 export const config = {
-  matcher: ['/app/:path*', '/api/:path*'],
+  matcher: ['/app/:path*'],
 };
