@@ -7,6 +7,7 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   experimental: {
     appDir: true,
+    allowMiddlewareResponseBody: true,
   },
 };
 

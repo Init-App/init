@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { nopeResolver } from '@hookform/resolvers/nope';
+import { Alert, Button, Form, InputField, Link } from 'app/components';
+import { baseUrl } from 'app/utils/client-constants';
+import { post } from 'app/utils/request';
 import { useRouter } from 'next/navigation';
 import * as Nope from 'nope-validator';
-import { Button, Form, InputField, Alert, Link } from 'app/components';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { post } from 'app/utils/request';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
 interface FormData {
   email: string;
@@ -17,8 +18,6 @@ interface FormData {
 }
 
 type ActionType = Record<Props['type'], SubmitHandler<FormData>>;
-
-const baseUrl = window.location.origin;
 
 const title = {
   signin: 'Sign in!',
@@ -49,12 +48,18 @@ const action = (
   async signin({ email, password }) {
     try {
       setError(undefined);
-      const { ok, statusText, res } = await post('/api/auth/signin', { email, password });
+      const { ok, statusText, res } = await post('/api/auth/signin', {
+        email,
+        password,
+      });
       if (!ok) {
         setError(res.error ? res.message : statusText);
-      }
-      if (res.redirectTo) {
-        push(res.redirectTo);
+      } else if (res.redirectTo) {
+        push(ok && res.redirectTo);
+      } else if (ok && !res.redirectTo) {
+        push('/app');
+      } else {
+        throw Error('Signed in with nowhere to redirect to.');
       }
     } catch (error) {
       setError('Something went wrong and it has been reported. Try again.');
