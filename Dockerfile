@@ -41,6 +41,7 @@ ENV NEXT_PUBLIC_LOGS_TOKEN=${NEXT_PUBLIC_LOGS_TOKEN}
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN env
 RUN yarn build
 RUN ls -la
 
