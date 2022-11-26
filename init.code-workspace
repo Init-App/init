@@ -12,7 +12,8 @@
 		"githubPullRequests.ignoredPullRequestBranches": [
 			"development"
 		],
-		"task.allowAutomaticTasks": "on"
+		"task.allowAutomaticTasks": "on",
+		"editor.fontSize": 13
 	},
 	"tasks": {
 		"version": "2.0.0",

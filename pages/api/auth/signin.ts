@@ -7,7 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const supabase = supabaseServer(req, res);
     const { isError, password, body, email } = validate(req, res);
 
-    if (isError) return res.send(body);
+    if (isError) return res.status(400).json(body);
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -15,18 +15,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
 
     if (error) {
-      return res.status(400).send({ message: error.message, error });
+      return res.status(400).json({ message: error.message, error });
     }
 
     if (isSession(data.session) && isUser(data.user)) {
-      const redirectUrl = req.query.redirectedFrom ?? '/app';
-      return res.redirect(Array.isArray(redirectUrl) ? redirectUrl[0] : redirectUrl);
+      const redirectTo = req.body.redirectTo ?? '/app';
+      return res.status(200).json({ redirectTo });
     }
 
-    return res.status(400).send({ message: 'Something went terribly wrong. Try again.' });
+    return res.status(400).json({ message: 'Something went terribly wrong. Try again.' });
   } catch (error) {
-    res.status(500).send({ message: 'Something went terribly wrong. Try again.' });
-    throw error;
+    console.error('API/signin', error);
+    return res.status(400).json({ message: 'Something went terribly wrong. Try again.', error });
   }
 }
 
