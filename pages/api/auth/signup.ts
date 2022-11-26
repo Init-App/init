@@ -1,6 +1,7 @@
 import { supabaseServer } from 'app/utils/supabase-server';
 import { isSession, isUser, validate } from 'app/utils/auth-handler';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { buildUrl } from 'app/utils/utils';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -8,12 +9,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { isError, body, password, email } = validate(req, res);
 
     if (isError) return res.json(body);
+    const redirectTo = buildUrl(req.url, req.headers.host, req.body.redirectTo) ?? '/app';
 
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: req.body.redirectTo,
+        emailRedirectTo: redirectTo,
       },
     });
 
@@ -22,7 +24,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (isSession(data.session) && isUser(data.user)) {
-      const redirectTo = req.body.redirectTo ?? '/app';
       return res.status(200).json({ redirectTo });
     }
     return res.status(200).json({ message: 'An email with a signup link has been sent!' });

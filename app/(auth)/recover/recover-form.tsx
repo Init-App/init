@@ -8,7 +8,6 @@ import { Alert, Button, Form, InputField, Link } from 'app/components';
 import { post } from 'app/utils/request';
 import type { Dispatch } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { baseUrl } from 'app/utils/client-constants';
 
 interface FormData {
   email: string;
@@ -26,7 +25,7 @@ const submit =
     setError(undefined);
     const { ok, statusText, res } = await post('/api/auth/recover', {
       email,
-      redirectTo: `${baseUrl}/confirm-recovery`,
+      redirectTo: `/confirm-recovery`,
     });
     if (!ok) {
       setError(res.error ? res.message : statusText);
