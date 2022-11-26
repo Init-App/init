@@ -13,7 +13,7 @@ const didNotCompleteOnboarding = async (supabase: SupabaseClient, userId: string
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const supabase = supabaseServer(req, res);
-    if (req.method === 'PATCH') {
+    if (req.method !== 'POST') {
       return res.status(404).send({ message: 'Not found' });
     }
 
@@ -29,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(404).send({ message: 'You must be logged in first.' });
     }
 
-    // Add user name to profile
+    // Add username to profile
     const { error: profileError } = await supabase
       .from('profiles')
       .update({ full_name: req.body.name, has_completed_onboarding: true })

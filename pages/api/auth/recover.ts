@@ -1,4 +1,3 @@
-import 'server-only';
 import { supabaseServer } from 'app/utils/supabase-server';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -9,7 +8,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(404).send({ message: 'Not found' });
     }
 
-    const { error } = await supabase.auth.resetPasswordForEmail(req.body.email);
+    const { error } = await supabase.auth.resetPasswordForEmail(req.body.email, {
+      redirectTo: '',
+    });
 
     if (error) {
       return res.status(400).send({ message: error.message, error });

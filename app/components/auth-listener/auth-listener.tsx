@@ -4,11 +4,11 @@ import { supabaseBrowser } from 'app/utils/supabase-browser';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function SupabaseListener({ accessToken }: { accessToken?: string }) {
+export function AuthListener({ accessToken }: { accessToken?: string }) {
   const router = useRouter();
 
   useEffect(() => {
-    supabaseBrowser.auth.onAuthStateChange((event, session) => {
+    supabaseBrowser.auth.onAuthStateChange((_, session) => {
       if (session?.access_token !== accessToken) {
         router.refresh();
       }

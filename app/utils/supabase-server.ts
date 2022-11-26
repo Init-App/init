@@ -1,4 +1,3 @@
-import 'server-only';
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from 'types/database.types';
 import type { NextApiRequest, NextApiResponse } from 'next';

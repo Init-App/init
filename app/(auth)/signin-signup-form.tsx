@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { nopeResolver } from '@hookform/resolvers/nope';
+import { useRouter } from 'next/navigation';
 import * as Nope from 'nope-validator';
 import { Button, Form, InputField, Alert, Link } from 'app/components';
 import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { post } from 'app/utils/request';
-import { supabaseBrowser } from 'app/utils/supabase-browser';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 
 interface FormData {
   email: string;
@@ -16,6 +17,8 @@ interface FormData {
 }
 
 type ActionType = Record<Props['type'], SubmitHandler<FormData>>;
+
+const baseUrl = window.location.origin;
 
 const title = {
   signin: 'Sign in!',
@@ -41,6 +44,7 @@ const schema = Nope.object().shape({
 const action = (
   setError: Dispatch<string | undefined>,
   setMessage: Dispatch<string | undefined>,
+  push: AppRouterInstance['push'],
 ): ActionType => ({
   async signin({ email, password }) {
     try {
@@ -49,25 +53,36 @@ const action = (
       if (!ok) {
         setError(res.error ? res.message : statusText);
       }
-    } catch (e) {
-      setError(e.message ?? 'Something went wrong and it has been reported. Try again.');
-      throw new Error(e);
+      if (res.redirectTo) {
+        push(res.redirectTo);
+      }
+    } catch (error) {
+      setError('Something went wrong and it has been reported. Try again.');
+      throw error;
     }
   },
   async signup({ email, password }) {
     try {
-
       setError(undefined);
-      const { res, ok, statusText } = await post('/api/auth/signup', { email, password });
+      const { res, ok, statusText } = await post('/api/auth/signup', {
+        email,
+        password,
+        redirectTo: `${baseUrl}/confirm-signup`,
+      });
 
       if (!ok) {
         setError(res.error ? res.message : statusText);
       } else {
         setMessage(res.message);
       }
-    } catch (e) {
-      setError(e.message ?? 'Something went wrong and it has been reported. Try again.');
-      throw new Error(e);
+      if (res.redirectTo) {
+        setTimeout(() => {
+          push(res.redirectTo);
+        }, 3000);
+      }
+    } catch (error) {
+      setError('Something went wrong and it has been reported. Try again.');
+      throw error;
     }
   },
 });
@@ -79,7 +94,8 @@ interface Props {
 export const SigninSignupForm: FC<Props> = ({ type }) => {
   const [error, setError] = useState<string>();
   const [message, setMessage] = useState<string>();
-  const submit = action(setError, setMessage);
+  const { push } = useRouter();
+  const submit = action(setError, setMessage, push);
   const {
     register,
     handleSubmit,
