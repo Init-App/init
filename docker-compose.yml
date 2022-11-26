@@ -13,8 +13,7 @@ services:
   app:
     <<: *environment
     build:
-      context: https://github.com/Init-App/init#development
-      dockerfile: Dockerfile
+      context: ./
       args:
         - NODE_ENV=staging
         - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
@@ -24,8 +23,12 @@ services:
         limits:
           memory: 250M
     restart: always
+  nginx:
+    depends_on:
+      - app
+    build: ./nginx
     ports:
-      - "80:3000"
+      - 80:80
 
 secrets:
   NEXT_PUBLIC_LOGFLARE_API_KEY:
