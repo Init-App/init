@@ -9,7 +9,9 @@ services:
       context: https://github.com/Init-App/init#development
       dockerfile: Dockerfile
     environment:
-      NODE_ENV: staging
+      - NODE_ENV=staging
+      - NEXT_PUBLIC_SUPABASE_URL
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY
     deploy:
       resources:
         limits:
