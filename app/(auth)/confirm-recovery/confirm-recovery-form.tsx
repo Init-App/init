@@ -2,7 +2,6 @@
 
 import { nopeResolver } from '@hookform/resolvers/nope';
 import { Alert, Button, Form, InputField, Link } from 'app/components';
-import { baseUrl } from 'app/utils/client-constants';
 import { post } from 'app/utils/request';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { useRouter } from 'next/navigation';
@@ -29,7 +28,7 @@ const submit =
       setError(undefined);
       const { ok, res, statusText } = await post('/api/auth/confirm-recovery', {
         password,
-        redirectTo: `${baseUrl}/app`,
+        redirectTo: `/app`,
       });
       if (!ok) {
         setError(res.error ? res.message : statusText);

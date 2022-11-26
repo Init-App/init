@@ -1,5 +1,6 @@
 import { isSession } from 'app/utils/auth-handler';
 import { supabaseServer } from 'app/utils/supabase-server';
+import { buildUrl } from 'app/utils/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -43,7 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const redirectTo = !userData.has_completed_onboarding
         ? '/onboarding'
-        : req.body.redirectTo ?? '/app';
+        : buildUrl(req.url, req.headers.host, req.body.redirectTo) ?? '/app';
 
       return res.status(200).json({ redirectTo });
     }

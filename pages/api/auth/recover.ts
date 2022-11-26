@@ -1,4 +1,5 @@
 import { supabaseServer } from 'app/utils/supabase-server';
+import { buildUrl } from 'app/utils/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,7 +10,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const { error } = await supabase.auth.resetPasswordForEmail(req.body.email, {
-      redirectTo: req.body.redirectTo,
+      redirectTo: buildUrl(req.url, req.headers.host, req.body.redirectTo) ?? '/app',
     });
 
     if (error) {

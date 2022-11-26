@@ -2,7 +2,6 @@
 
 import { nopeResolver } from '@hookform/resolvers/nope';
 import { Alert, Button, Form, InputField, Link } from 'app/components';
-import { baseUrl } from 'app/utils/client-constants';
 import { post } from 'app/utils/request';
 import { useRouter } from 'next/navigation';
 import * as Nope from 'nope-validator';
@@ -72,7 +71,7 @@ const action = (
       const { res, ok, statusText } = await post('/api/auth/signup', {
         email,
         password,
-        redirectTo: `${baseUrl}/confirm-signup`,
+        redirectTo: `/confirm-signup`,
       });
 
       if (!ok) {
