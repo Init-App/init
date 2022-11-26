@@ -1,3 +1,3 @@
 'use client';
 
-export const baseUrl = window?.location?.origin;
+export const baseUrl = typeof window !== undefined ? window?.location?.origin : '';
