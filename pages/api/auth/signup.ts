@@ -1,35 +1,38 @@
-import 'server-only';
-import { Session, User } from '@supabase/gotrue-js';
 import { supabaseServer } from 'app/utils/supabase-server';
-import { validate } from 'app/utils/auth-handler';
+import { isSession, isUser, validate } from 'app/utils/auth-handler';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const isSession = (session: Session | null): session is Session => !!session?.access_token;
-const isUser = (user: User | null): user is User => !!user?.id;
-
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const supabase = supabaseServer(req, res);
-  const { isError, body, password, email } = validate(req, res);
-
-  if (isError) return res.send(body);
-
   try {
+    const supabase = supabaseServer(req, res);
+    const { isError, body, password, email } = validate(req, res);
+
+    if (isError) {
+      return res.json(body);
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: req.body.redirectTo,
+      },
     });
 
     if (error) {
-      return res.status(400).send({ message: error.message, error });
+      return res.status(400).json({ message: error.message, error });
     }
 
     if (isSession(data.session) && isUser(data.user)) {
-      await supabase.auth.setSession(data.session);
-      res.redirect('/app');
+      const redirectUrl = req.query.redirectedFrom ?? '/app';
+      return res
+        .status(200)
+        .json({ redirectTo: Array.isArray(redirectUrl) ? redirectUrl[0] : redirectUrl });
     }
+    return res.status(200).json({ message: 'An email with a signup link has been sent!' });
   } catch (error) {
-    res.status(400).send({ message: 'Something terrible happened. Try again.' });
-    throw error;
+    console.error(error);
+    return res.status(400).json({ message: 'Something terrible happened. Try again.', error });
   }
 }
 

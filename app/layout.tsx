@@ -1,13 +1,12 @@
+import 'app/styles/globals.scss';
+import 'app/styles/theme.scss';
 import { headers, cookies } from 'next/headers';
 import { Inter } from '@next/font/google';
 import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import 'app/styles/globals.scss';
-import 'app/styles/theme.scss';
 import Script from 'next/script';
-import 'server-only';
-import { Database } from 'types/database.types';
-import AuthListener from './components/auth-listener/auth-listener';
 import { createServerSentryClient } from './utils/sentry.server.config';
+import type { Database } from 'types/database.types';
+import { AuthListener } from './components';
 
 createServerSentryClient();
 
@@ -22,8 +21,9 @@ export default async function RootLayout({ children }: { children: any }) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
   return (
-    <html className={inter.className}>
+    <html lang="en" className={inter.className}>
       <head>
         <title>Initist</title>
       </head>

@@ -16,7 +16,6 @@ export const createServerSentryClient = () => {
       new Sentry.Integrations.Http({ tracing: true, breadcrumbs: true }),
       new Sentry.Integrations.RequestData(),
     ],
-    debug: true,
     release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ?? 'unknown',
   });
 };

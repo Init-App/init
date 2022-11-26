@@ -1,3 +1,4 @@
+// noinspection JSLastCommaInObjectLiteral
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
@@ -6,7 +7,6 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   experimental: {
     appDir: true,
-    runtime: 'nodejs',
   },
 };
 
