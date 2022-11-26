@@ -1,12 +1,16 @@
+'use client';
+
 import { nopeResolver } from '@hookform/resolvers/nope';
 import { Alert, Button, Form, InputField, Link } from 'app/components';
 import { baseUrl } from 'app/utils/client-constants';
 import { post } from 'app/utils/request';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import { useRouter } from 'next/navigation';
 import * as Nope from 'nope-validator';
-import { Dispatch, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import type { Dispatch } from 'react';
+import { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 interface FormData {
   password: string;
