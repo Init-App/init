@@ -14,7 +14,12 @@
       "openFiles": [
         "pages/index.js"
       ]
-    }
+	},
+	"vscode": {
+		"extensions": [
+			"dbaeumer.vscode-eslint"
+		]
+	}
   },
   "portsAttributes": {
     "3000": {
