@@ -1,4 +1,4 @@
-FROM node:16 AS deps
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -6,11 +6,11 @@ WORKDIR /app
 COPY package.json yarn.lock* ./
 RUN yarn --frozen-lockfile
 
-# Rebuild the source code only when needed
-FROM node:16-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY src ./src
+COPY public ./public
+COPY next.config.js .
+COPY tsconfig.json .
+
 # Set ARGs
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -39,8 +39,21 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN yarn build
 
 # Production image, copy all the files and run next
-FROM node:16-alpine AS runner
+FROM node:18-alpine AS runner
+
 WORKDIR /app
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+
+COPY --from=builder /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -61,21 +74,4 @@ ENV NEXT_PUBLIC_LOGFLARE_SOURCE_ID=${NEXT_PUBLIC_LOGFLARE_SOURCE_ID}
 ARG NODE_ENV=${NODE_ENV}
 ENV NEXT_PUBLIC_LOGS_TOKEN=${NEXT_PUBLIC_LOGS_TOKEN}
 
-# Uncomment the following line in case you want to disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
 CMD node server.js
