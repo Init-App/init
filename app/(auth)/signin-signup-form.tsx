@@ -1,13 +1,15 @@
 'use client';
 
+import { nopeResolver } from '@hookform/resolvers/nope';
+import { Alert, Button, Form, InputField, Link } from 'app/components';
+import { post } from 'app/utils/request';
+import { useRouter } from 'next/navigation';
+import * as Nope from 'nope-validator';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { nopeResolver } from '@hookform/resolvers/nope';
-import * as Nope from 'nope-validator';
-import { Button, Form, InputField, Alert, Link } from 'app/components';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context';
 import type { Dispatch, FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { post } from 'app/utils/request';
 
 interface FormData {
   email: string;
@@ -40,23 +42,51 @@ const schema = Nope.object().shape({
 const action = (
   setError: Dispatch<string | undefined>,
   setMessage: Dispatch<string | undefined>,
+  push: AppRouterInstance['push'],
 ): ActionType => ({
   async signin({ email, password }) {
-    setError(undefined);
-    const { ok, statusText, res } = await post('/api/auth/signin', { email, password });
-
-    if (!ok) {
-      setError(res.error ? res.message : statusText);
+    try {
+      setError(undefined);
+      const { ok, statusText, res } = await post('/api/auth/signin', {
+        email,
+        password,
+      });
+      if (!ok) {
+        setError(res.error ? res.message : statusText);
+      } else if (res.redirectTo) {
+        push(ok && res.redirectTo);
+      } else if (ok && !res.redirectTo) {
+        push('/app');
+      } else {
+        throw Error('Signed in with nowhere to redirect to.');
+      }
+    } catch (error) {
+      setError('Something went wrong and it has been reported. Try again.');
+      throw error;
     }
   },
   async signup({ email, password }) {
-    setError(undefined);
-    const { res, ok, statusText } = await post('/api/auth/signup', { email, password });
+    try {
+      setError(undefined);
+      const { res, ok, statusText } = await post('/api/auth/signup', {
+        email,
+        password,
+        redirectTo: `/confirm-signup`,
+      });
 
-    if (!ok) {
-      setError(res.error ? res.message : statusText);
-    } else {
-      setMessage(res.message);
+      if (!ok) {
+        setError(res.error ? res.message : statusText);
+      } else {
+        setMessage(res.message);
+      }
+      if (res.redirectTo) {
+        setTimeout(() => {
+          push(res.redirectTo);
+        }, 3000);
+      }
+    } catch (error) {
+      setError('Something went wrong and it has been reported. Try again.');
+      throw error;
     }
   },
 });
@@ -68,7 +98,8 @@ interface Props {
 export const SigninSignupForm: FC<Props> = ({ type }) => {
   const [error, setError] = useState<string>();
   const [message, setMessage] = useState<string>();
-  const submit = action(setError, setMessage);
+  const { push } = useRouter();
+  const submit = action(setError, setMessage, push);
   const {
     register,
     handleSubmit,

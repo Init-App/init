@@ -6,7 +6,6 @@ import { BrowserTracing } from '@sentry/tracing';
 
 export const createSentry = () => {
   Sentry.init({
-    debug: true,
     dsn:
       process.env.NEXT_PUBLIC_SENTRY_DSN ||
       'https://f37b9ffd71ce439a9db1a9cd6de17369@o4504091157135360.ingest.sentry.io/4504091159101440',

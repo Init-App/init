@@ -1,46 +1,36 @@
-x-uffizzi:
-  ingress:
-    service: app
-    port: 80
+x-function: &environment
+  environment:
+    - NODE_ENV=development
+    - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+    - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    - NEXT_PUBLIC_SENTRY_ENV=${NEXT_PUBLIC_SENTRY_ENV}
+    - NEXT_PUBLIC_VERCEL_URL=${NEXT_PUBLIC_VERCEL_URL}
+    - NEXT_PUBLIC_LOGFLARE_API_KEY=${NEXT_PUBLIC_LOGFLARE_API_KEY}
+    - NEXT_PUBLIC_LOGFLARE_SOURCE_ID=${NEXT_PUBLIC_LOGFLARE_SOURCE_ID}
+    - NODE_ENV=${NODE_ENV}
+    - NEXT_PUBLIC_LOGS_TOKEN=${NEXT_PUBLIC_LOGS_TOKEN}
 
 services:
   app:
+    <<: *environment
     build:
-      context: https://github.com/Init-App/init#development
-      dockerfile: Dockerfile
-    environment:
-      NODE_ENV: staging
+      context: ./
+      args:
+        - NODE_ENV=staging
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     deploy:
       resources:
         limits:
           memory: 250M
     restart: always
     ports:
-      - "3000:3000"
-  logging:
-    image: sematext/agent:master-arm64
-    privileged: true
-    depends_on:
-      - app
-    environment:
-      - INFRA_TOKEN=c66e9c70-abb9-4e7b-9a7f-af309f98a002
-      - SERVER_BASE_URL=https://spm-receiver.sematext.com
-      - LOGS_RECEIVER_URL=https://logsene-receiver.sematext.com
-      - EVENT_RECEIVER_URL=https://event-receiver.sematext.com
-      - COMMAND_SERVER_URL=https://command.sematext.com
-    cap_add:
-      - SYS_ADMIN
-    restart: always
-    volumes:
-      - /:/hostfs:ro
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-      - /sys/kernel/debug:/sys/kernel/debug
-      - /sys:/host/sys:ro
-      - /dev:/hostfs/dev:ro
-volumes:
-  data:
-
+      - 3000:3000
+  
+endpoints:
+  - path: /
+    service: app
+    port: 3000
 
 secrets:
   NEXT_PUBLIC_LOGFLARE_API_KEY:

@@ -1,21 +1,26 @@
-import { supabase } from 'app/supabase';
+import { supabaseServer } from 'app/utils/supabase-server';
+import { buildUrl } from 'app/utils/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
+    const supabase = supabaseServer(req, res);
     if (req.method !== 'POST') {
-      return res.status(404).send({ message: 'Not found' });
+      return res.status(404).json({ message: 'Not found' });
     }
 
-    const { error } = await supabase.auth.resetPasswordForEmail(req.body.email);
+    const { error } = await supabase.auth.resetPasswordForEmail(req.body.email, {
+      redirectTo: buildUrl(req.url, req.headers.host, req.body.redirectTo) ?? '/app',
+    });
 
     if (error) {
-      return res.status(400).send({ message: error.message, error });
+      return res.status(400).json({ message: error.message, error });
     } else {
-      return res.status(200).send({ message: 'A reset link as been sent to your email address.' });
+      return res.status(200).json({ message: 'A reset link as been sent to your email address.' });
     }
   } catch (error) {
-    return res.status(400).send({ message: 'Something went terribly wrong. Try again.' });
+    res.status(400).json({ message: 'Something went terribly wrong. Try again.' });
+    throw error;
   }
 }
 

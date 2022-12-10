@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Session, User } from '@supabase/gotrue-js';
 
 export const validate = (req: NextApiRequest, res: NextApiResponse) => {
   const body = { message: '' };
@@ -21,3 +22,6 @@ export const validate = (req: NextApiRequest, res: NextApiResponse) => {
     password,
   };
 };
+
+export const isSession = (session: Session | null): session is Session => !!session?.access_token;
+export const isUser = (user: User | null): user is User => !!user?.id;

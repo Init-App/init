@@ -23,7 +23,10 @@ const submit =
   (setError: SetText, setMessage: SetText): SubmitHandler<FormData> =>
   async ({ email }) => {
     setError(undefined);
-    const { ok, statusText, res } = await post('/api/auth/recover', { email });
+    const { ok, statusText, res } = await post('/api/auth/recover', {
+      email,
+      redirectTo: `/confirm-recovery`,
+    });
     if (!ok) {
       setError(res.error ? res.message : statusText);
     } else {

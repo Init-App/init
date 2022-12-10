@@ -1,7 +1,8 @@
-import { supabase } from '../../app/supabase';
+import { supabaseServer } from 'app/utils/supabase-server';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-const didNotCompleteOnboarding = async (userId: string) => {
+const didNotCompleteOnboarding = async (supabase: SupabaseClient, userId: string) => {
   const { error } = await supabase
     .from('profiles')
     .update({ has_completed_onboarding: false })
@@ -11,7 +12,8 @@ const didNotCompleteOnboarding = async (userId: string) => {
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method === 'PATCH') {
+    const supabase = supabaseServer(req, res);
+    if (req.method !== 'POST') {
       return res.status(404).send({ message: 'Not found' });
     }
 
@@ -27,14 +29,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(404).send({ message: 'You must be logged in first.' });
     }
 
-    // Add user name to profile
+    // Add username to profile
     const { error: profileError } = await supabase
       .from('profiles')
       .update({ full_name: req.body.name, has_completed_onboarding: true })
       .eq('id', user.id);
 
     if (profileError) {
-      await didNotCompleteOnboarding(user.id);
+      await didNotCompleteOnboarding(supabase, user.id);
       return res.status(400).send({ message: profileError.message, profileError });
     }
 
@@ -46,7 +48,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .single();
 
     if (teamError) {
-      await didNotCompleteOnboarding(user.id);
+      await didNotCompleteOnboarding(supabase, user.id);
       return res.status(400).send({ message: teamError.message, teamError });
     }
 
@@ -56,7 +58,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .insert({ team_id: teamData.id, user_id: user.id });
 
     if (relationError) {
-      await didNotCompleteOnboarding(user.id);
+      await didNotCompleteOnboarding(supabase, user.id);
       return res.status(400).send({ message: relationError.message, relationError });
     }
 
