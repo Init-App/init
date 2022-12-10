@@ -6,10 +6,7 @@ WORKDIR /app
 COPY package.json yarn.lock* ./
 RUN yarn --frozen-lockfile
 
-COPY src ./src
-COPY public ./public
-COPY next.config.js .
-COPY tsconfig.json .
+COPY . .
 
 # Set ARGs
 ARG NEXT_PUBLIC_SUPABASE_URL
