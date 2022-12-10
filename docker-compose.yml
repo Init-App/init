@@ -24,20 +24,11 @@ services:
         limits:
           memory: 250M
     restart: always
-    netowrks:
-      - init_network
-  nginx:
-    depends_on:
-      - app
-    build: ./nginx
-    ports:
-      - 80:80
-    netowrks:
-      - init_network
-
-netowrks:
-  init_network:
-    external: true
+  
+endpoints:
+  - path: /
+    service: app
+    port: 3000
 
 secrets:
   NEXT_PUBLIC_LOGFLARE_API_KEY:
